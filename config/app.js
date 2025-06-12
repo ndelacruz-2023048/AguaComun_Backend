@@ -24,7 +24,7 @@ const configs = (app)=>{
 }
 
 const routes = (app)=>{
-    app.use('/v1/banckobama/auth', authRoutes)
+    app.use('/v1/aguacomun/auth', authRoutes)
 }
 
 export const initServer =()=>{
