@@ -12,17 +12,17 @@ const userSchema = new Schema(
             type: String,
             unique: true
         },
-        accountNumber: {
+        /* DPI: {
             type: Number,
             unique: true
-        },
-        DPI: {
-            type: Number,
-            unique: true
-        },
+        }, */
         address: {
-            type: String
-        },
+            type: {
+                zone: { type: String },  // Ejemplo: "Zona 2"
+                municipality: { type: String }, // Ejemplo: "San Lucas"
+                department: { type: String },  // Ejemplo: "Sacatepéquez"
+            },
+        },//depa muni zona
         mobilePhone: {
             type: String
         },
@@ -39,11 +39,11 @@ const userSchema = new Schema(
         profilePicture: {
             type: String
         },
-        workName: {
-            type: String
-        },
-        monthlyIncome: {
-            type: Number
+        rol: {
+            type: String,
+            uppercase: true,
+            enum: ['ADMIN', 'CLIENT', 'COORDINADOR'],
+            default: 'CLIENT'
         }
     },
     {
