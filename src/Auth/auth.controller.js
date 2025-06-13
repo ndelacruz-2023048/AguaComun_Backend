@@ -22,7 +22,8 @@ export const login = async(req, res)=> {
                 surname: user.surname,
                 email: user.email,
                 username: user.username,
-                profile: user.profilePicture
+                profile: user.profilePicture,
+                type: user.rol,
             }
             const token = await generateJwt(loggedUser)
             return res
