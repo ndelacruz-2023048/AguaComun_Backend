@@ -64,7 +64,8 @@ export const registerUser = [
                 minLength: 4,
                 minLowercase: 1,
                 minNumbers: 1,
-                minUppercase: 1
+                minUppercase: 1,
+                minSymbols: 0,
             }
         )
         .isLength({ min: 4 }).withMessage(`The password must be at least 4 characters long`)
