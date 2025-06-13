@@ -18,12 +18,23 @@ export const registerUser = [
         .notEmpty().withMessage('Username cannot be empty')
         .isLength({ min: 4, max: 10 }).withMessage(`Username must be between 4 and 10 characters`)
         .custom(existUserName),
-    body('DPI')
-        .notEmpty().withMessage('DPI cannot be empty')
-        .isNumeric().withMessage('DPI must be a number')
-        .isLength({ min: 13, max: 13 }).withMessage('DPI must be exactly 13 digits'),
-    body('address')
-        .notEmpty().withMessage('Address cannot be empty'),
+     // address.zone: opcional
+    body('address.zone')
+        .notEmpty().withMessage('La zona no puede estar vacía')
+        .isLength({ max: 30 }).withMessage(`La zona no puede tener más de 30 caracteres`)
+        .isString().withMessage('La zona debe ser un texto válido'),
+
+    // address.municipality: opcional
+    body('address.municipality')
+        .notEmpty().withMessage('El municipio no puede estar vacío')
+        .isLength({ max: 30 }).withMessage(`El municipio no puede tener más de 30 caracteres`)
+        .isString().withMessage('El municipio debe ser un texto válido'),
+
+    // address.department: opcional
+    body('address.department')
+        .notEmpty().withMessage('El departamento no puede estar vacío')
+        .isLength({ max: 30 }).withMessage(`El departamento no puede tener más de 30 caracteres`)
+        .isString().withMessage('El departamento debe ser un texto válido'),
     body('mobilePhone')
         .notEmpty().withMessage('Mobile phone cannot be empty')
         .custom((mobilePhone, { req }) => {
@@ -58,12 +69,5 @@ export const registerUser = [
         )
         .isLength({ min: 4 }).withMessage(`The password must be at least 4 characters long`)
         .custom(comonPasswords),
-    body('workName')
-        .notEmpty().withMessage('Work name cannot be empty')
-        .isLength({ max: 30 }).withMessage(`Can't be more than 30 characters`),
-    body('monthlyIncome')
-        .notEmpty().withMessage('Monthly income cannot be empty')
-        .isNumeric().withMessage('Monthly income must be a number')
-        .isFloat({ min: 100 }).withMessage('Monthly income must be at least 100'),
     validateErros,
 ]
