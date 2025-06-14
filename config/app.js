@@ -6,6 +6,7 @@ import helmet from "helmet"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import authRoutes from '../src/Auth/auth.routes.js'
+import paymentRoutes from '../src/Payment/payment.routes.js'
 import { limiter } from '../middlewares/rate.limit.js'
 
 const configs = (app)=>{
@@ -25,6 +26,7 @@ const configs = (app)=>{
 
 const routes = (app)=>{
     app.use('/v1/aguacomun/auth', authRoutes)
+    app.use('/v1/aguacomun/payment', paymentRoutes)
 }
 
 export const initServer =()=>{

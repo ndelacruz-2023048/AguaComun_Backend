@@ -1,9 +1,10 @@
-import { Schema, model } from "mongoose"
+import { Schema, model } from "mongoose";
 
 const paymentSchema = new Schema(
   {
-    name: {
-      type: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
       required: true
     },
     amount: {
@@ -18,7 +19,7 @@ const paymentSchema = new Schema(
     bankcheck: {
       type: Number,
       required: function () {
-        return this.paymethod === 'Cheque'
+        return this.paymethod === 'Cheque';
       }
     },
     address: {
@@ -38,6 +39,6 @@ const paymentSchema = new Schema(
   {
     timestamps: true
   }
-)
+);
 
-export default model('Payment', paymentSchema)
+export default model('Payment', paymentSchema);
