@@ -5,7 +5,8 @@
     import cors from "cors"
     import cookieParser from "cookie-parser"
     import authRoutes from '../src/Auth/auth.routes.js'
-    import { limiter } from '../middlewares/rate.limit.js'
+    import paymentRoutes from '../src/Payment/payment.routes.js'
+import { limiter } from '../middlewares/rate.limit.js'
     import http from "http"
     import {Server as SocketServer} from 'socket.io'
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
@@ -29,11 +30,12 @@
     const routes = (app)=>{
         app.use('/v1/aguacomun/auth', authRoutes)
         app.use('/v1/aguacomun/campaign', campaignRouter)
+        app.use('/v1/aguacomun/payment', paymentRoutes)
 }
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
-    }
+}
 
     export const initServer =()=>{
         const app = express()
