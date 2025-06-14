@@ -1,4 +1,5 @@
 import User from '../User/user.model.js'
+import Community from '../Community/community.model.js'
 import { checkPassword, encrypt } from '../../utils/encrypt.js'
 import { generateJwt } from '../../utils/jwt.js'
 import { validateTokenJWT } from '../../middlewares/validate.jwt.js'
@@ -60,10 +61,41 @@ export const login = async(req, res)=> {
 
 export const register = async(req, res)=> {
     try {
-        let data = req.body
+        const data = req.body
         let user = new User(data)
         user.password = await encrypt(user.password)
         await user.save()
+
+        const {department, municipality, zone} = data.address
+        let community = await Community.findOne(
+            {
+                department,
+                municipality,
+                zone
+            }
+        )
+        if (!community) {
+            // Crear una nueva comunidad si no existe
+            community = new Community({
+                department,
+                municipality,
+                zone,
+                name: `${department} - ${municipality} - ${zone}`,
+                description: `Community of ${department} - ${municipality} - ${zone}`,
+                image: 'https://res.cloudinary.com/dzydnoljd/image/upload/v1749830077/Kinal_Blog_vwsczs.png',
+                members: [user._id],
+                createdBy: user._id,
+            });
+            await community.save();
+        } else {
+            // Si existe, agregar el usuario a members solo si no está
+            if (!community.members.includes(user._id)) {
+                community.members.push(user._id);
+                await community.save();
+            }
+        }
+        await community.save()
+
         return res.status(200).send(
             {
                 success: true,

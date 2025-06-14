@@ -3,7 +3,7 @@ import { encrypt } from '../utils/encrypt.js';
 
 export const initAdmin = async (req, res) => {
     try {
-        const adminExists = await User.findOne({ username: process.env.NICKNAME });
+        const adminExists = await User.findOne({ rol: 'ADMIN' });
         if (!adminExists) {
         console.log('Creating user with ADMIN role default');
 
@@ -15,19 +15,16 @@ export const initAdmin = async (req, res) => {
             surname: process.env.APPELLIDOS,
             username: process.env.NICKNAME,
             address: {
-            street: process.env.ADDRESS_STREET,
-            zone: process.env.ADDRESS_ZONE,
-            municipality: process.env.ADDRESS_MUNICIPALITY,
-            department: process.env.ADDRESS_DEPARTMENT,
-            country: process.env.ADDRESS_COUNTRY,
+                zone: process.env.ADDRESS_ZONE,
+                municipality: process.env.ADDRESS_MUNICIPALITY,
+                department: process.env.ADDRESS_DEPARTMENT,
             },
             mobilePhone: process.env.CELULAR,
             country: process.env.COUNTRY,
             email: process.env.CORREO,
             password: encryptPassword,
             profilePicture: '',
-            workName: process.env.WORK,
-            monthlyIncome: process.env.MONTOI,
+            rol: process.env.ROL,
         });
         await adminUserDefault.save();
         console.log('User successfully created');

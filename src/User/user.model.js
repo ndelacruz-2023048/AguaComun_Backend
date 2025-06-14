@@ -43,7 +43,7 @@ const userSchema = new Schema(
             type: String,
             uppercase: true,
             enum: ['ADMIN', 'CLIENT', 'COORDINADOR'],
-            default: 'ADMIN'
+            default: 'CLIENT'
         }
     },
     {
