@@ -1,5 +1,4 @@
     'use string'
-
     import express from "express"
     import morgan from "morgan"
     import helmet from "helmet"
@@ -10,6 +9,7 @@
     import http from "http"
     import {Server as SocketServer} from 'socket.io'
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
+    import campaignRouter from '../src/Campaign/campaign.router.js'
 
     const configs = (app)=>{
         app.use(express.json())
@@ -28,7 +28,8 @@
 
     const routes = (app)=>{
         app.use('/v1/aguacomun/auth', authRoutes)
-    }
+        app.use('/v1/aguacomun/campaign', campaignRouter)
+}
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
