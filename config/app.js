@@ -1,4 +1,5 @@
     'use string'
+
     import express from "express"
     import morgan from "morgan"
     import helmet from "helmet"
@@ -6,7 +7,7 @@
     import cookieParser from "cookie-parser"
     import authRoutes from '../src/Auth/auth.routes.js'
     import paymentRoutes from '../src/Payment/payment.routes.js'
-import { limiter } from '../middlewares/rate.limit.js'
+    import { limiter } from '../middlewares/rate.limit.js'
     import http from "http"
     import {Server as SocketServer} from 'socket.io'
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
