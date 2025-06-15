@@ -52,7 +52,7 @@ export const getAllReports = async(req, res)=> {
                         select: 'name -_id'
                     }
                 ]
-            )
+            ).sort({createdAt: -1})
 
         if(!reports) return res.status(404).send(
             {

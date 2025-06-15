@@ -11,6 +11,8 @@
     import {Server as SocketServer} from 'socket.io'
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
     import reportRoutes from '../src/Reports/report.routes.js'
+    import { watterReports } from "../src/Sockets/WatterReports.js"
+    import communitysRoutes from '../src/Community/community.routes.js'
 
     const configs = (app)=>{
         app.use(express.json())
@@ -30,10 +32,12 @@
     const routes = (app)=>{
         app.use('/v1/aguacomun/auth', authRoutes)
         app.use('/v1/aguacomun/reports', reportRoutes)
+        app.use('/v1/aguacomun/community', communitysRoutes)
     }
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
+        watterReports(socket, io)
     }
 
     export const initServer =()=>{
