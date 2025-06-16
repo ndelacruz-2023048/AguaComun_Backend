@@ -31,7 +31,7 @@ export const login = async(req, res)=> {
                     httpOnly: false,
                     secure: true,
                     sameSite: 'None',
-                    maxAge: 2000*60*60
+                    maxAge: 1000*60*60
                 })
                 .send(
                     {

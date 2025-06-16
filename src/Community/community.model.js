@@ -27,7 +27,11 @@ const communitySchema = new Schema(
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: 'User'
-        }
+        },
+        reports: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Report'
+        }],
     },
     {
         versionKey: false,

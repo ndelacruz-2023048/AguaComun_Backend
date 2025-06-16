@@ -11,6 +11,9 @@
     import http from "http"
     import {Server as SocketServer} from 'socket.io'
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
+    import reportRoutes from '../src/Reports/report.routes.js'
+    import { watterReports } from "../src/Sockets/WatterReports.js"
+    import communitysRoutes from '../src/Community/community.routes.js'
     import campaignRouter from '../src/Campaign/campaign.router.js'
 
     const configs = (app)=>{
@@ -30,12 +33,15 @@
 
     const routes = (app)=>{
         app.use('/v1/aguacomun/auth', authRoutes)
+        app.use('/v1/aguacomun/reports', reportRoutes)
+        app.use('/v1/aguacomun/community', communitysRoutes)
         app.use('/v1/aguacomun/campaign', campaignRouter)
         app.use('/v1/aguacomun/payment', paymentRoutes)
 }
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
+        watterReports(socket, io)
 }
 
     export const initServer =()=>{

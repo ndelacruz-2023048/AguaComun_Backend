@@ -4,6 +4,7 @@ import {
     existEmail,
     existUserName,
     comonPasswords, 
+    objectIdValid,
     validatePhoneNumberForDB
 } from '../utils/db.validators.js'
 
@@ -70,5 +71,53 @@ export const registerUser = [
         )
         .isLength({ min: 4 }).withMessage(`The password must be at least 4 characters long`)
         .custom(comonPasswords),
+    validateErros,
+]
+
+export const createdReport = [
+    body('issueTitle')
+        .notEmpty().withMessage('Issue title cannot be empty')
+        .isLength({ max: 100 }).withMessage(`Issue title can't be more than 100 characters`),
+    body('issueCategory')
+        .notEmpty().withMessage('Issue category cannot be empty')
+        .isLength({ max: 50 }).withMessage(`Issue category can't be more than 50 characters`),
+    body('description')
+        .notEmpty().withMessage('Description cannot be empty')
+        .isLength({ max: 500 }).withMessage(`Description can't be more than 500 characters`),
+    body('urgencyLevel')
+        .optional()
+        .isIn(['Low', 'Medium', 'High']).withMessage('Urgency level must be Low, Medium, or High'),
+    body('reportPhoto')
+        .optional(),
+    body('solutions')
+        .optional()
+        .isLength({ max: 500 }).withMessage(`Solutions can't be more than 500 characters`),
+    body('community')
+        .notEmpty().withMessage('Community cannot be empty')
+        .custom(objectIdValid).withMessage('Community must be a valid ObjectId'),
+    validateErros,
+]
+
+export const updatedReport = [
+    body('issueTitle')
+        .optional()
+        .isLength({ max: 100 }).withMessage(`Issue title can't be more than 100 characters`),
+    body('issueCategory')
+        .optional()
+        .isLength({ max: 50 }).withMessage(`Issue category can't be more than 50 characters`),
+    body('description')
+        .optional()
+        .isLength({ max: 500 }).withMessage(`Description can't be more than 500 characters`),
+    body('urgencyLevel')
+        .optional()
+        .isIn(['Low', 'Medium', 'High']).withMessage('Urgency level must be Low, Medium, or High'),
+    body('reportPhoto')
+        .optional(),
+    body('solutions')
+        .optional()
+        .isLength({ max: 500 }).withMessage(`Solutions can't be more than 500 characters`),
+    body('community')
+        .optional()
+        .custom(objectIdValid).withMessage('Community must be a valid ObjectId'),
     validateErros,
 ]
