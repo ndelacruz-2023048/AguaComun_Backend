@@ -12,6 +12,8 @@
     import {Server as SocketServer} from 'socket.io'
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
     import campaignRouter from '../src/Campaign/campaign.router.js'
+    import communityCollaborationRouter from '../src/CommunityCollaboration/communityCollaboration.routes.js'
+import { createTurnsAutomatic } from "../src/CommunityCollaboration/communityCollaboration.controller.js"
 
     const configs = (app)=>{
         app.use(express.json())
@@ -28,15 +30,18 @@
         app.use(limiter)
     }
 
+    
     const routes = (app)=>{
         app.use('/v1/aguacomun/auth', authRoutes)
         app.use('/v1/aguacomun/campaign', campaignRouter)
         app.use('/v1/aguacomun/payment', paymentRoutes)
+        app.use('/v1/aguacomun/communityCollaboration', communityCollaborationRouter)
 }
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
-}
+    }     
+
 
     export const initServer =()=>{
         const app = express()
@@ -51,6 +56,10 @@
         io.on('connection', (socket) => {
             console.log(`New socket connection: ${socket.id}`)
             socketConfig(socket, io)
+            socket.on("disconnect", () => {
+                console.log(`❌ Cliente desconectado: ${socket.id}`);
+                console.log(`🔢 Clientes restantes: ${io.engine.clientsCount}`);
+              });
         })
 
         try{
