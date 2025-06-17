@@ -27,6 +27,11 @@ export const communityCollaboration = async(socket, io) => {
         const communityCollaboration = await CommunityCollaboration.find()
        socket.emit("list-activity-collaboration", communityCollaboration);
     })
+    
+    socket.on("get-list-community-collaboration",async()=>{
+        const communityCollaboration = await CommunityCollaboration.find().populate()
+       socket.emit("list-community-collaboration", communityCollaboration);
+    })
 }
 
 export const  emitNewCollaboration = async(newCollaboration) => {
