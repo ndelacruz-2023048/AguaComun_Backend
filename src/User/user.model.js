@@ -44,6 +44,10 @@ const userSchema = new Schema(
             uppercase: true,
             enum: ['ADMIN', 'CLIENT', 'COORDINADOR'],
             default: 'CLIENT'
+        },
+        community: {
+            type: Schema.Types.ObjectId,
+            ref: 'Community',
         }
     },
     {
