@@ -16,7 +16,8 @@
     import communitysRoutes from '../src/Community/community.routes.js'
     import campaignRouter from '../src/Campaign/campaign.router.js'
     import communityCollaborationRouter from '../src/CommunityCollaboration/communityCollaboration.routes.js'
-import { createTurnsAutomatic } from "../src/CommunityCollaboration/communityCollaboration.controller.js"
+    import communityTurnRouter from '../src/CommunityTurn/communityTurn.routes.js'
+import { communityCollaborationTurn } from "../src/Sockets/communityCollaborationTurn.socket.js"
 
     const configs = (app)=>{
         app.use(express.json())
@@ -41,11 +42,13 @@ import { createTurnsAutomatic } from "../src/CommunityCollaboration/communityCol
         app.use('/v1/aguacomun/campaign', campaignRouter)
         app.use('/v1/aguacomun/payment', paymentRoutes)
         app.use('/v1/aguacomun/communityCollaboration', communityCollaborationRouter)
+        app.use('/v1/aguacomun/communityTurn', communityTurnRouter)
 }
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
         watterReports(socket, io)
+        communityCollaborationTurn(socket, io)
     }     
 
 
