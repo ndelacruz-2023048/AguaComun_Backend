@@ -3,6 +3,7 @@ import Community from '../Community/community.model.js'
 import { checkPassword, encrypt } from '../../utils/encrypt.js'
 import { generateJwt } from '../../utils/jwt.js'
 import { validateTokenJWT } from '../../middlewares/validate.jwt.js'
+import { getIO } from '../Sockets/io.js'
 
 export const login = async(req, res)=> {
     const { userLogin, password } = req.body
@@ -87,6 +88,12 @@ export const register = async(req, res)=> {
                 createdBy: user._id,
             });
             await community.save();
+            // Emitir evento de comunidad creada
+            const io = getIO();
+            if(io) {
+                const communities = await Community.find();
+                io.emit('list-communities', communities);
+            }
         } else {
             // Si existe, agregar el usuario a members solo si no está
             if (!community.members.includes(user._id)) {
