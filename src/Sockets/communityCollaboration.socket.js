@@ -40,7 +40,7 @@ export const communityCollaboration = async(socket, io) => {
     })
 }
 
-export const  emitNewCollaboration = async(newCollaboration) => {
+export const emitNewCollaboration = async(newCollaboration) => {
     const communityCollaboration = await CommunityCollaboration.find()
     io.emit("list-activity-collaboration", communityCollaboration);
     
