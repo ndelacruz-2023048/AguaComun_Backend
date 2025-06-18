@@ -2,20 +2,24 @@ import Payment from './payment.model.js'
 import Campaign from '../Campaign/campaign.model.js'
 
 export const savePayment = async (req, res) => {
-    try {
-        const data = req.body
-        const payment = new Payment(data)
+  try {
+    const userId = req.user.uid; // <-- Obtenemos el ID del usuario desde el token
+    const data = {
+      ...req.body,
+      user: userId // <-- Asociamos el pago al usuario
+    };
 
-        await payment.save()
+    const payment = new Payment(data);
+    await payment.save();
 
-        return res.send({
-            message: 'Payment created successfully',
-            payment
-        })
-    } catch (err) {
-        console.error(err)
-        return res.status(500).send({ message: 'General error during payment creation', err })
-    }
+    return res.send({
+      message: 'Payment created successfully',
+      payment
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({ message: 'General error during payment creation', err });
+  }
 }
 
 export const getPayments = async (req, res) => {
