@@ -29,7 +29,8 @@ export const communityCollaborationTurn = async(socket, io) => {
         console.log(updatedTurn);
         
         const turns = await CommunityTurn.find({activityId: data.activityId}).populate('activityId');
-        
+        const communityCollaboration = await CommunityCollaboration.find().populate("community").populate("turns").
+       io.emit("list-community-collaboration", communityCollaboration);
         io.emit("list-turns", turns);
     })
 }
