@@ -24,8 +24,6 @@ export const communityCollaborationTurn = async(socket, io) => {
     })
     
     socket.on("update-turn", async(data) => {
-        console.log("paso aqui");
-        console.log(data);
         
         const updatedTurn = await CommunityTurn.findByIdAndUpdate(data.communityTurnId, {status: "occupied", assignedTo: data.idUser},{new:true});
         console.log(updatedTurn);
