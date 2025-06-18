@@ -7,6 +7,11 @@ const paymentSchema = new Schema(
       ref: 'User',
       required: true
     },
+    campaign: {
+      type: Schema.Types.ObjectId,
+      ref: 'Campaign',
+      required: true
+    },
     amount: {
       type: Number,
       required: true
