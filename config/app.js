@@ -18,7 +18,8 @@
     import communityRoutesManager from '../src/CommunityManager/community.routes.js'
     import communityCollaborationRouter from '../src/CommunityCollaboration/communityCollaboration.routes.js'
     import userRoutes from '../src/User/user.routes.js'
-    import { createTurnsAutomatic } from "../src/CommunityCollaboration/communityCollaboration.controller.js"
+    import communityTurnRouter from '../src/CommunityTurn/communityTurn.routes.js'
+    import { communityCollaborationTurn } from "../src/Sockets/communityCollaborationTurn.socket.js"
     import { setIO } from "../src/Sockets/io.js"
     import { communityManagerSocket } from "../src/Sockets/communityManager.socket.js"
     import {userSocket} from "../src/Sockets/user.sockets.js"
@@ -48,13 +49,15 @@
         app.use('/v1/aguacomun/communityCollaboration', communityCollaborationRouter)
         app.use('/v1/aguacomun/communityManager', communityRoutesManager)
         app.use('/v1/aguacomun/user', userRoutes)
+        app.use('/v1/aguacomun/communityTurn', communityTurnRouter)
 }
 
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
         watterReports(socket, io)
-        communityManagerSocket(socket, io)
+        communityCollaborationTurn(socket, io)
         userSocket(socket, io)
+        communityManagerSocket(socket, io)
     }     
 
 

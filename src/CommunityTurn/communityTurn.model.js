@@ -16,6 +16,7 @@ const communityTurnSchema = new Schema({
     assignedTo: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        default: null
     },
     status: {
         type: String,
