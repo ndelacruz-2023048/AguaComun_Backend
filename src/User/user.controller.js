@@ -77,3 +77,26 @@ export const updateUserRole = async (req, res) => {
         });
     }
 };
+
+export const getMe = async (req, res) => {
+    try {
+        const userId = req.user.id || req.user._id;
+        const user = await User.findById(userId).populate('community');
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        return res.status(200).send({
+            success: true,
+            user
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+};
