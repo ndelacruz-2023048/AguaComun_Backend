@@ -15,11 +15,12 @@ export const paymentSocket = async (socket, io) => {
   setSocket(socket);
 
   // Escuchar si el frontend pide los pagos de una campaña específica
-  socket.on('get-payments-campaign', async (campaignId) => {
-  console.log('📥 Recibido ID de campaña:', campaignId) // 1️⃣ Verifica que el frontend esté enviando bien
+  socket.on('get-payments-campaign', async () => {
+  // 1️⃣ Verifica que el frontend esté enviando bien
+
 
   try {
-    const payments = await Payment.find({ campaign: campaignId, status: 'Confirmado' })
+    const payments = await Payment.find()
       .populate('user', 'name')
 
     console.log('💸 Pagos encontrados:', payments) // 2️⃣ Aquí ves si encontró datos en la base
@@ -38,6 +39,14 @@ export const paymentSocket = async (socket, io) => {
 
     io.emit('list-campaign-payments', payments);
   });
+
+  socket.on('confirm-payment', async (paymentId) => {
+    const updated = await Payment.findByIdAndUpdate(paymentId, { status: 'Confirmado' }, { new: true });
+
+    // reenviar la lista actualizada o el pago actualizado
+    const updatedPayments = await Payment.find(); // o según campaña
+    io.emit('list-campaign-payments', updatedPayments);
+  });
 };
 
 export const emitPaymentUpdate = async (campaignId) => {
@@ -47,3 +56,4 @@ export const emitPaymentUpdate = async (campaignId) => {
 
   io.emit('list-campaign-payments', payments);
 };
+
