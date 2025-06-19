@@ -121,3 +121,29 @@ export const updatedReport = [
         .custom(objectIdValid).withMessage('Community must be a valid ObjectId'),
     validateErros,
 ]
+
+export const createPayment = [
+    body('campaign')
+      .notEmpty().withMessage('Campaign is required')
+      .custom(objectIdValid).withMessage('Campaign must be a valid ObjectId'),
+    body('amount')
+      .notEmpty().withMessage('Amount is required')
+      .isFloat({ gt: 0 }).withMessage('Amount must be greater than 0'),
+    body('paymethod')
+      .notEmpty().withMessage('Pay method is required')
+      .isIn(['Efectivo', 'Cheque']).withMessage('Pay method must be "Efectivo" or "Cheque"'),
+    body('bankcheck')
+      .if(body('paymethod').equals('Cheque'))
+      .notEmpty().withMessage('Bank check number is required for Cheque payments')
+      .isNumeric().withMessage('Bank check must be a number'),
+    body('address')
+      .notEmpty().withMessage('Address is required')
+      .isLength({ max: 100 }).withMessage('Address cannot exceed 100 characters'),
+    body('manualDate')
+      .optional()
+      .isISO8601().withMessage('Manual date must be a valid date'),
+    body('status')
+      .optional()
+      .isIn(['Pendiente', 'Confirmado']).withMessage('Status must be "Pendiente" or "Confirmado"'),
+    validateErros
+  ]
