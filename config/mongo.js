@@ -20,8 +20,7 @@ export const connect = async()=>{
             console.log('Mongo | disconnected')
         })
 
-        await mongoose.connect(
-            `${process.env.DB_SERVICE}://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
+        await mongoose.connect(process.env.DB_URI,
             {
                 maxPoolSize: 50, 
                 serverSelectionTimeoutMS: 5000
