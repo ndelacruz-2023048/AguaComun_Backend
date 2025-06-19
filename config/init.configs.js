@@ -23,7 +23,7 @@ export const initAdmin = async (req, res) => {
             country: process.env.COUNTRY,
             email: process.env.CORREO,
             password: encryptPassword,
-            profilePicture: '',
+            profilePicture: 'https://res.cloudinary.com/dzydnoljd/image/upload/v1749830077/Kinal_Blog_vwsczs.png',
             rol: process.env.ROL,
         });
         await adminUserDefault.save();
