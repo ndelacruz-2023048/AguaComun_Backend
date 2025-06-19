@@ -27,7 +27,7 @@ const userSchema = new Schema(
             type: String
         },
         country: {
-            type: String
+            type: String    
         },
         email: {
             type: String,
@@ -38,7 +38,7 @@ const userSchema = new Schema(
         },
         profilePicture: {
             type: String
-        },
+        },      
         rol: {
             type: String,
             uppercase: true,

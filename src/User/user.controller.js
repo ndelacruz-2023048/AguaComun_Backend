@@ -1,6 +1,5 @@
 import User from './user.model.js';
-import { emitUserRoleUpdated } from '../Sockets/user.sockets.js';
-
+import Communitys from '../Community/community.model.js'
 export const getUsers = async (req, res) => {
     try {
         const users = await User.find().populate('community');
@@ -62,8 +61,6 @@ export const updateUserRole = async (req, res) => {
                 message: 'User not found'
             });
         }
-        // Emitir evento de socket para actualizar el rol en tiempo real
-        await emitUserRoleUpdated(userId, newRole);
         return res.status(200).send({
             success: true,
             message: 'Role updated successfully',
@@ -80,17 +77,45 @@ export const updateUserRole = async (req, res) => {
 
 export const getMe = async (req, res) => {
     try {
-        const userId = req.user.id || req.user._id;
-        const user = await User.findById(userId).populate('community');
+        const userId = req.user.id || req.user._id || req.user.uid;
+        const user = await User.findById(userId);
         if (!user) {
             return res.status(404).send({
                 success: false,
                 message: 'User not found'
             });
         }
+        // Buscar todas las comunidades donde el usuario es miembro
+        const Community = await Communitys.default;
+        const communities = await Community.find({ members: user._id });
         return res.status(200).send({
             success: true,
-            user
+            user,
+            communities
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+};
+
+export const getUserCommunities = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        const communities = await Communitys.find({ members: user._id });
+        return res.status(200).send({
+            success: true,
+            communities
         });
     } catch (error) {
         console.error(error);
