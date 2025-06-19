@@ -13,7 +13,7 @@
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
     import reportRoutes from '../src/Reports/report.routes.js'
     import { watterReports } from "../src/Sockets/WatterReports.js"
-    import {paymentSocket} from "../src/Sockets/payment.socket.js"
+    import {newpaymentSocket} from "../src/Sockets/newpayment.socket.js"
     import communitysRoutes from '../src/Community/community.routes.js'
     import campaignRouter from '../src/Campaign/campaign.router.js'
     import communityCollaborationRouter from '../src/CommunityCollaboration/communityCollaboration.routes.js'
@@ -47,7 +47,7 @@ import { createTurnsAutomatic } from "../src/CommunityCollaboration/communityCol
     const socketConfig = (socket,io)=>{
         communityCollaboration(socket, io)
         watterReports(socket, io)
-        paymentSocket(socket, io)
+        newpaymentSocket(socket, io)
     }     
 
 

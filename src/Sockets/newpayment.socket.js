@@ -11,7 +11,7 @@ export const setSocket = (socketIO) => {
 };
 
 // Función principal que configura los eventos del socket para pagos
-export const paymentSocket = async (socket, io) => {
+export const newpaymentSocket = async (socket, io) => {
   setIO(io);
   setSocket(socket);
 

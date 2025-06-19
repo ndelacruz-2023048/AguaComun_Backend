@@ -1,6 +1,6 @@
 import Payment from './payment.model.js'
 import Campaign from '../Campaign/campaign.model.js'
-import { emitNewPayment } from '../Sockets/payment.socket.js'
+import { emitNewPayment } from '../Sockets/newpayment.socket.js'
 
 export const savePayment = async (req, res) => {
   try {
@@ -13,7 +13,6 @@ export const savePayment = async (req, res) => {
     const payment = new Payment(data);
     await payment.save();
 
-    // Emitimos por socket al crear el pago
     await emitNewPayment(payment._id);
 
     return res.send({
