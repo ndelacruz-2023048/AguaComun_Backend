@@ -31,7 +31,7 @@
         app.use(express.urlencoded({extended: false}))
         app.use(cors(
             {
-                origin: 'http://localhost:5173',
+                origin: 'https://agua-comun-frontend.vercel.app',
                 credentials: true,
             }
         ))
@@ -70,7 +70,7 @@
         const server = http.createServer(app)
         const io = new SocketServer(server,{
             cors: {
-                origin: 'http://localhost:5173',
+                origin: 'https://agua-comun-frontend.vercel.app',
                 credentials: true,
             }
         })
