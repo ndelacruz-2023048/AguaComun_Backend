@@ -1,6 +1,6 @@
 import Community from "../Community/community.model.js";
 import CommunityCollaboration from "../CommunityCollaboration/communityCollaboration.model.js";
-
+import CommunityTurn from "../CommunityTurn/communityTurn.model.js";
 let io;
 let socket
 
@@ -36,6 +36,7 @@ export const communityCollaboration = async(socket, io) => {
               model: "User"
             }
           });
+        
        socket.emit("list-community-collaboration", communityCollaboration);
     })
 }

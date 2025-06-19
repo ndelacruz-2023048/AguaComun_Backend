@@ -26,11 +26,18 @@ export const communityCollaborationTurn = async(socket, io) => {
     socket.on("update-turn", async(data) => {
         
         const updatedTurn = await CommunityTurn.findByIdAndUpdate(data.communityTurnId, {status: "occupied", assignedTo: data.idUser},{new:true});
-        console.log(updatedTurn);
         
         const turns = await CommunityTurn.find({activityId: data.activityId}).populate('activityId');
         const communityCollaboration = await CommunityCollaboration.find().populate("community").populate("turns")
        io.emit("list-community-collaboration", communityCollaboration);
         io.emit("list-turns", turns);
+
+        const communityCollaborationTurnByUser = await CommunityTurn.find({assignedTo:data.idUser}).populate("activityId")
+        socket.emit("list-community-collaboration-turn", communityCollaborationTurnByUser);
     })
+
+    socket.on("get-list-community-collaboration-turn", async(id) => {
+        const communityCollaborationTurnByUser = await CommunityTurn.find({assignedTo:id}).populate("activityId")
+        io.emit("list-community-collaboration-turn", communityCollaborationTurnByUser);
+    })   
 }
