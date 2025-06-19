@@ -44,7 +44,16 @@ const communityCollaborationSchema = new Schema({
         required: [true, 'Community is required']
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toObject: { virtuals: true },
+  toJSON: { virtuals: true }
 });
+
+communityCollaborationSchema.virtual('turns', {
+    ref: 'CommunityTurn',         // Nombre del modelo relacionado
+    localField: '_id',          // Campo local (Room._id)
+    foreignField: 'activityId',       // Campo en roomDetails que referencia a Room
+    justOne: false              // true si es 1 a 1, false si es 1 a muchos
+  });
 
 export default model("CommunityCollaboration", communityCollaborationSchema)

@@ -29,12 +29,18 @@ export const communityCollaboration = async(socket, io) => {
     })
     
     socket.on("get-list-community-collaboration",async()=>{
-        const communityCollaboration = await CommunityCollaboration.find().populate()
+        const communityCollaboration = await CommunityCollaboration.find().populate("community").populate("turns").populate({
+            path: "turns",
+            populate: {
+              path: "assignedTo",  // Aquí está el usuario asignado a cada turno
+              model: "User"
+            }
+          });
        socket.emit("list-community-collaboration", communityCollaboration);
     })
 }
 
-export const  emitNewCollaboration = async(newCollaboration) => {
+export const emitNewCollaboration = async(newCollaboration) => {
     const communityCollaboration = await CommunityCollaboration.find()
     io.emit("list-activity-collaboration", communityCollaboration);
     
