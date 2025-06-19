@@ -11,9 +11,9 @@ const reportSchema = new Schema(
         description: {
             type: String
         },
-        reportPhoto: {
+        reportPhoto: [{
             type: String
-        },
+        }],
         dateRepoted: {
             type: Date,
             default: Date.now,
