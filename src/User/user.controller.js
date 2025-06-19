@@ -1,5 +1,9 @@
 import User from './user.model.js';
 import Communitys from '../Community/community.model.js'
+import Payment from '../Payment/payment.model.js';
+import Report from '../Reports/report.model.js';
+import CommunityCollaboration from '../CommunityCollaboration/communityCollaboration.model.js';
+
 export const getUsers = async (req, res) => {
     try {
         const users = await User.find().populate('community');
@@ -116,6 +120,68 @@ export const getUserCommunities = async (req, res) => {
         return res.status(200).send({
             success: true,
             communities
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+};
+
+export const getUserCampaignsWithContribution = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        // Buscar todos los pagos hechos por el usuario
+        const payments = await Payment.find({ user: userId }).populate('campaign');
+        // Listar todos los aportes con nombre, monto y descripción de la campaña
+        const contributions = payments
+            .filter(p => p.campaign)
+            .map(p => ({
+                name: p.campaign.name,
+                amount: p.amount,
+                description: p.campaign.description,
+                status: p.status,
+            }));
+        return res.status(200).send({
+            success: true,
+            contributions
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+};
+
+export const getUserReports = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const reports = await Report.find({ reportedBy: userId });
+        return res.status(200).send({
+            success: true,
+            reports
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+};
+
+export const getUserCommunityCollaborations = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        // Buscar todas las colaboraciones creadas por el usuario
+        const collaborations = await CommunityCollaboration.find({ participants: userId });
+        return res.status(200).send({
+            success: true,
+            collaborations
         });
     } catch (error) {
         console.error(error);
