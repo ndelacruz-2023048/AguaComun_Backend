@@ -17,12 +17,13 @@
     import campaignRouter from '../src/Campaign/campaign.router.js'
     import communityRoutesManager from '../src/CommunityManager/community.routes.js'
     import communityCollaborationRouter from '../src/CommunityCollaboration/communityCollaboration.routes.js'
-    import userRoutes from '../src/User/user.routes.js'
+        import userRoutes from '../src/User/user.routes.js'
     import communityTurnRouter from '../src/CommunityTurn/communityTurn.routes.js'
     import { communityCollaborationTurn } from "../src/Sockets/communityCollaborationTurn.socket.js"
     import { setIO } from "../src/Sockets/io.js"
     import { communityManagerSocket } from "../src/Sockets/communityManager.socket.js"
     import {userSocket} from "../src/Sockets/user.sockets.js"
+    import { paymentSocket } from "../src/Sockets/payment.socket.js"
 
     const configs = (app)=>{
         app.use(express.json())
@@ -58,6 +59,7 @@
         communityCollaborationTurn(socket, io)
         userSocket(socket, io)
         communityManagerSocket(socket, io)
+        paymentSocket(socket, io)
     }     
 
 
