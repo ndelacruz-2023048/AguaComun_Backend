@@ -37,7 +37,7 @@ export const communityCollaboration = async(socket, io) => {
             }
           });
         
-       socket.emit("list-community-collaboration", communityCollaboration);
+       io.emit("list-community-collaboration", communityCollaboration);
     })
 }
 

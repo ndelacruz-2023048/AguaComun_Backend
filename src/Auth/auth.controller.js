@@ -4,7 +4,7 @@ import { checkPassword, encrypt } from '../../utils/encrypt.js'
 import { generateJwt } from '../../utils/jwt.js'
 import { validateTokenJWT } from '../../middlewares/validate.jwt.js'
 import { getIO } from '../Sockets/io.js'
-
+import { ObjectId } from 'mongodb'
 export const login = async(req, res)=> {
     const { userLogin, password } = req.body
     try {
@@ -17,6 +17,12 @@ export const login = async(req, res)=> {
             }
         )
         if(user && await checkPassword(user.password, password)){
+            console.log(user);
+            const communities = await Community.findOne({
+                members: new ObjectId(user._id)
+              });
+            console.log(communities);
+            
             const loggedUser = {
                 uid: user._id,
                 name: user.name,
@@ -26,10 +32,10 @@ export const login = async(req, res)=> {
                 profile: user.profilePicture,
                 type: user.rol,
                 mobilePhone: user.mobilePhone,
-                community: user.community ? {
-                    id: user.community._id,
-                    name: user.community.name,
-                    image: user.community.image
+                community: communities ? {
+                    id: communities._id,
+                    name: communities.name,
+                    image: communities.image
                 } : null
             }
             const token = await generateJwt(loggedUser)

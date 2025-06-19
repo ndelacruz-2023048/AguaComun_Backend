@@ -28,7 +28,13 @@ export const communityCollaborationTurn = async(socket, io) => {
         const updatedTurn = await CommunityTurn.findByIdAndUpdate(data.communityTurnId, {status: "occupied", assignedTo: data.idUser},{new:true});
         
         const turns = await CommunityTurn.find({activityId: data.activityId}).populate('activityId');
-        const communityCollaboration = await CommunityCollaboration.find().populate("community").populate("turns")
+        const communityCollaboration = await CommunityCollaboration.find().populate("community").populate("turns").populate({
+            path: "turns",
+            populate: {
+              path: "assignedTo",  // Aquí está el usuario asignado a cada turno
+              model: "User"
+            }
+          });
        io.emit("list-community-collaboration", communityCollaboration);
         io.emit("list-turns", turns);
 
