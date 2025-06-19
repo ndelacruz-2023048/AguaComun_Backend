@@ -25,6 +25,12 @@ export const login = async(req, res)=> {
                 username: user.username,
                 profile: user.profilePicture,
                 type: user.rol,
+                mobilePhone: user.mobilePhone,
+                community: user.community ? {
+                    id: user.community._id,
+                    name: user.community.name,
+                    image: user.community.image
+                } : null
             }
             const token = await generateJwt(loggedUser)
             return res
