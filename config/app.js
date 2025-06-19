@@ -13,6 +13,7 @@
     import { communityCollaboration } from "../src/Sockets/communityCollaboration.socket.js"
     import reportRoutes from '../src/Reports/report.routes.js'
     import { watterReports } from "../src/Sockets/WatterReports.js"
+    import {newpaymentSocket} from "../src/Sockets/newpayment.socket.js"
     import communitysRoutes from '../src/Community/community.routes.js'
     import campaignRouter from '../src/Campaign/campaign.router.js'
     import communityRoutesManager from '../src/CommunityManager/community.routes.js'
@@ -60,6 +61,7 @@
         userSocket(socket, io)
         communityManagerSocket(socket, io)
         paymentSocket(socket, io)
+        newpaymentSocket(socket, io)
     }     
 
 
