@@ -1,5 +1,5 @@
 import {Router} from 'express'
-
+import { FormCampaign } from '../../middlewares/validators.js'
 import { 
     createCampaign,
     getAllCampaigns,
@@ -11,10 +11,10 @@ import {
 
     const app = Router()
 
-    app.post('/', createCampaign)
+    app.post('/', [FormCampaign], createCampaign)
     app.get('/', getAllCampaigns)
     app.get('/:id', getCampaignById)
-    app.put('/:id', updateCampaign)
+    app.put('/:id', [FormCampaign], updateCampaign)
     app.delete('/:id', deleteCampaign)
     app.put('/:id/status', updateCampaignStatus)
 

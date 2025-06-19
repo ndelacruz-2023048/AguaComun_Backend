@@ -121,3 +121,25 @@ export const updatedReport = [
         .custom(objectIdValid).withMessage('Community must be a valid ObjectId'),
     validateErros,
 ]
+
+export const FormCampaign =[
+    body("name")
+        .notEmpty().withMessage("Name is required")
+        .isLength({mas:25}).withMessage("The name can't be more than 25 characters"),
+    body("category")
+        .notEmpty().withMessage("Category is required"),
+    body("status")
+        .notEmpty().withMessage("Status is required")
+        .isIn(['Activa', 'Pausada', 'Finalizada']),
+    body("goalAmount")
+        .notEmpty().withMessage("Goal Amount isw required")
+        .isLength({min:3 , max:7}).withMessage("The value cannot exceed 6 digits or have fewer than 3 digits."),
+    body("startDate")
+        .notEmpty().withMessage("Start Date is required"),
+    body("endDate")
+        .notEmpty().withMessage("End Date is required"),
+    body("description")
+        .notEmpty().withMessage("Description is required")
+        .isLength({min:1, max:100}).withMessage("Description can't be more than 100 characters"),
+    validateErros,
+]
