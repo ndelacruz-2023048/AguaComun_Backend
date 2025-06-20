@@ -41,7 +41,7 @@ export const login = async(req, res)=> {
             const token = await generateJwt(loggedUser)
             return res
                 .cookie('access_token', token, {
-                    httpOnly: true,     // 👈 Evita ataques XSS
+                    httpOnly: false,     // 👈 Evita ataques XSS
                     secure: process.env.NODE_ENV === 'production', // 👈 Solo HTTPS en prod
                     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 👈 Ajuste según entorno
                     maxAge: 1000 * 60 * 60, // 1 hora
