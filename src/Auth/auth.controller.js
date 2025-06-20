@@ -41,11 +41,14 @@ export const login = async(req, res)=> {
             const token = await generateJwt(loggedUser)
             return res
                 .cookie('access_token', token, {
-                    httpOnly: false,
-                    secure: true,
-                    sameSite: 'None',
-                    maxAge: 1000*60*60
-                })
+                    httpOnly: true,     // 👈 Evita ataques XSS
+                    secure: process.env.NODE_ENV === 'production', // 👈 Solo HTTPS en prod
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 👈 Ajuste según entorno
+                    maxAge: 1000 * 60 * 60, // 1 hora
+                    domain: process.env.NODE_ENV === 'production' 
+                        ? '.railway.app' // ⚠️ O el dominio compartido entre front y back
+                        : undefined
+            })
                 .send(
                     {
                         success: true,
