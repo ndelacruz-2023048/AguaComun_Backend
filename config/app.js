@@ -31,7 +31,7 @@
         app.use(express.urlencoded({extended: false}))
         app.use(cors(
             {
-                origin: 'https://aguacomunfrontend-production.up.railway.app',
+                origin: ['https://aguacomunfrontend-production.up.railway.app', 'http://localhost:5173'],
                 credentials: true,
             }
         ))
@@ -70,7 +70,7 @@
         const server = http.createServer(app)
         const io = new SocketServer(server,{
             cors: {
-                origin: 'https://aguacomunfrontend-production.up.railway.app',
+                origin: ['https://aguacomunfrontend-production.up.railway.app', 'http://localhost:5173'],           
                 credentials: true,
             }
         })
