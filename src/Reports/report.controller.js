@@ -1,5 +1,6 @@
 import Report from "./report.model.js"
 import User from '../User/user.model.js'
+import { broadcastResumeUpdate } from "../Sockets/SocketResume.js"
 
 export const createReport = async (req, res) => {
     const data = req.body 
@@ -20,6 +21,12 @@ export const createReport = async (req, res) => {
         data.reportedBy = req.user.uid
         const newReport = new Report(data)
         await newReport.save()
+
+
+
+
+        
+        await broadcastResumeUpdate()
 
         return res.status(201).send(
             {

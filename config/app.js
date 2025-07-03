@@ -16,6 +16,7 @@
     import {newpaymentSocket} from "../src/Sockets/newpayment.socket.js"
     import communitysRoutes from '../src/Community/community.routes.js'
     import campaignRouter from '../src/Campaign/campaign.router.js'
+    import resumeRouter from '../src/resume/resume.routes.js'
     import communityRoutesManager from '../src/CommunityManager/community.routes.js'
     import communityCollaborationRouter from '../src/CommunityCollaboration/communityCollaboration.routes.js'
         import userRoutes from '../src/User/user.routes.js'
@@ -25,6 +26,7 @@
     import { communityManagerSocket } from "../src/Sockets/communityManager.socket.js"
     import {userSocket} from "../src/Sockets/user.sockets.js"
     import { paymentSocket } from "../src/Sockets/payment.socket.js"
+    import { broadcastResumeUpdate } from '../src/Sockets/SocketResume.js'
 
     const configs = (app)=>{
         app.use(express.json())
@@ -46,11 +48,12 @@
         app.use('/v1/aguacomun/auth', authRoutes)
         app.use('/v1/aguacomun/reports', reportRoutes)
         app.use('/v1/aguacomun/community', communitysRoutes)
-        app.use('/v1/aguacomun/campaign', campaignRouter)
+        app.use('/v1/aguacomun/v', campaignRouter)
         app.use('/v1/aguacomun/payment', paymentRoutes)
         app.use('/v1/aguacomun/communityCollaboration', communityCollaborationRouter)
         app.use('/v1/aguacomun/communityManager', communityRoutesManager)
         app.use('/v1/aguacomun/user', userRoutes)
+        app.use('/v1/aguacomun/resume', resumeRouter)
         app.use('/v1/aguacomun/communityTurn', communityTurnRouter)
 }
 
@@ -62,7 +65,8 @@
         communityManagerSocket(socket, io)
         paymentSocket(socket, io)
         newpaymentSocket(socket, io)
-    }     
+        broadcastResumeUpdate   (socket, io)
+    }
 
 
     export const initServer =()=>{
