@@ -1,4 +1,5 @@
 import Payment from '../Payment/payment.model.js';
+import Campaign from '../Campaign/campaign.model.js';
 
 let io;
 let socket;
@@ -31,6 +32,16 @@ export const paymentSocket = async (socket, io) => {
   }
 })
 
+  socket.on('get-list-campaigns', async () => {
+  try {
+    const campaigns = await Campaign.find().sort({ createdAt: -1 });
+    io.emit('list-campaigns', campaigns); // 👈 esta línea es CLAVE
+  } catch (error) {
+    console.error('Error al obtener campañas:', error);
+  }
+  console.log('📢 get-list-campaigns recibido')
+  });
+
   // Cuando se crea un nuevo pago confirmado, emitir a todos
   socket.on('new-payment-confirmed', async (campaignId) => {
     const payments = await Payment.find({ campaign: campaignId, status: 'Confirmado' })
@@ -48,6 +59,7 @@ export const paymentSocket = async (socket, io) => {
     io.emit('list-campaign-payments', updatedPayments);
   });
 };
+
 
 export const emitPaymentUpdate = async (campaignId) => {
   const payments = await Payment.find({ campaign: campaignId, status: 'Confirmado' })
