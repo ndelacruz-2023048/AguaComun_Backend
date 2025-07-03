@@ -1,5 +1,6 @@
 import Report from "./report.model.js"
 import User from '../User/user.model.js'
+import { getIO } from '../Sockets/io.js'
 
 export const createReport = async (req, res) => {
     const data = req.body 
@@ -20,6 +21,26 @@ export const createReport = async (req, res) => {
         data.reportedBy = req.user.uid
         const newReport = new Report(data)
         await newReport.save()
+
+        const io = getIO();
+        if (io) {
+            const summary = await Report.aggregate([
+                {
+                    $group: {
+                        _id: {
+                            $dateToString: { format: "%Y-%m-%d", date: "$createdAt" }
+                        },
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { _id: 1 } }
+            ]);
+            const formatted = summary.map(entry => ({
+                name: entry._id,
+                value: entry.count
+            }));
+            io.emit("report:summary", formatted);
+        }
 
         return res.status(201).send(
             {
