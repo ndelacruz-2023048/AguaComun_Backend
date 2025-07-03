@@ -191,3 +191,18 @@ export const getUserCommunityCollaborations = async (req, res) => {
         });
     }
 };
+
+export const getRecentUsers = async (req, res) => {
+  try {
+    const users = await User.find()
+      .sort({ createdAt: -1 })
+      .limit(4)
+      .select('name rol createdAt profilePicture')
+      .lean()
+
+    res.status(200).send(users)
+  } catch (error) {
+    console.error(error)
+    res.status(500).send({ message: 'Error fetching recent users' })
+  }
+}
