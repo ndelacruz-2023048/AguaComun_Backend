@@ -166,6 +166,6 @@ export const FormCampaign =[
         .notEmpty().withMessage("End Date is required"),
     body("description")
         .notEmpty().withMessage("Description is required")
-        .isLength({min:1, max:100}).withMessage("Description can't be more than 100 characters"),
+        .isLength({min:1, max:1000}).withMessage("Description can't be more than 100 characters"),
     validateErros,
 ]
