@@ -106,8 +106,17 @@ export const register = async(req, res)=> {
             // Emitir evento de comunidad creada
             const io = getIO();
             if(io) {
-                const communities = await Community.find();
-                io.emit('list-communities', communities);
+                const communities = await Community.find()
+                .sort({ createdAt: -1 })
+                .limit(6)
+                .populate([
+                { path: "members", select: "name surname -_id" },
+                { path: "createdBy", select: "name surname -_id" },
+                { path: "reports", select: "issueTitle -_id" },
+                ])
+
+            io.emit("community:latest", communities); 
+            io.emit("list-communities", await Community.find())
             }
         } else {
             // Si existe, agregar el usuario a members solo si no está

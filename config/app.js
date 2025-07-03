@@ -25,6 +25,8 @@
     import { communityManagerSocket } from "../src/Sockets/communityManager.socket.js"
     import {userSocket} from "../src/Sockets/user.sockets.js"
     import { paymentSocket } from "../src/Sockets/payment.socket.js"
+    import {communitySocket} from "../src/Sockets/community.socket.js"
+    import {reportStatsSocket} from "../src/Sockets/reports.socket.js"
 
     const configs = (app)=>{
         app.use(express.json())
@@ -62,6 +64,8 @@
         communityManagerSocket(socket, io)
         paymentSocket(socket, io)
         newpaymentSocket(socket, io)
+        communitySocket(socket, io)
+        reportStatsSocket(socket, io)
     }     
 
 
@@ -82,7 +86,7 @@
             socket.on("disconnect", () => {
                 console.log(`❌ Cliente desconectado: ${socket.id}`);
                 console.log(`🔢 Clientes restantes: ${io.engine.clientsCount}`);
-              });
+            });
         })
 
         try{
