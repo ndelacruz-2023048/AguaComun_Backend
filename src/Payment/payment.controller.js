@@ -1,6 +1,7 @@
 import Payment from './payment.model.js'
 import Campaign from '../Campaign/campaign.model.js'
 import { emitNewPayment } from '../Sockets/newpayment.socket.js'
+import { getIO } from '../Sockets/io.js'
 
 export const savePayment = async (req, res) => {
   try {
@@ -12,6 +13,12 @@ export const savePayment = async (req, res) => {
 
     const payment = new Payment(data);
     await payment.save();
+
+    const io = getIO()
+    if (io) {
+      const totalPayments = await Payment.countDocuments()
+      io.emit('payment-count', totalPayments)
+    }
 
     await emitNewPayment(payment._id);
 

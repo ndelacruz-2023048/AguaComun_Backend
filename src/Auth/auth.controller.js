@@ -118,6 +118,7 @@ export const register = async(req, res)=> {
             io.emit("community:latest", communities); 
             io.emit("list-communities", await Community.find())
             }
+            
         } else {
             // Si existe, agregar el usuario a members solo si no está
             if (!community.members.includes(user._id)) {
@@ -126,6 +127,16 @@ export const register = async(req, res)=> {
             }
         }
         await community.save()
+
+        const io = getIO()
+            if (io) {
+            const recentUsers = await User.find()
+                .sort({ createdAt: -1 })
+                .limit(4)
+                .select('name rol createdAt profilePicture') // puedes ajustar campos
+                .lean()
+            io.emit('new-users', recentUsers)
+        }
 
         return res.status(200).send(
             {
