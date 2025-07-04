@@ -42,6 +42,11 @@ export const createReport = async (req, res) => {
             io.emit("report:summary", formatted);
         }
 
+        if (io) {
+            const allReports = await Report.find()
+            io.emit('report-count', allReports.length) // puedes emitir también solo la longitud
+        }   
+
         return res.status(201).send(
             {
                 success: true,

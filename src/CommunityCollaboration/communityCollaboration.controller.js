@@ -4,6 +4,7 @@ import { emitNewCollaboration } from "../Sockets/communityCollaboration.socket.j
 import dayjs from "dayjs"
 import duration from 'dayjs/plugin/duration.js';
 import customParseFormat from 'dayjs/plugin/customParseFormat.js'
+import { getIO } from "../Sockets/io.js"
 dayjs.extend(duration)
 dayjs.extend(customParseFormat)
 export const createCommunityCollaboration = async (req, res) => {
@@ -21,6 +22,12 @@ export const createCommunityCollaboration = async (req, res) => {
         const data = await createTurnsAutomatic(dataNewTurns)
 
         await CommunityTurn.insertMany(data)
+
+        const totalActivities = await CommunityCollaboration.countDocuments()
+        const io = getIO()
+        if (io) {
+            io.emit('activity-count', totalActivities)
+        }
         res.status(201).send({
             success: true,
             message: "Actividad comunitaria creada correctamente",
@@ -123,4 +130,22 @@ const sumarHora=(horaBase, tiempoASumar)=> {
       .add(s, 'second')
   
     return nuevaHora.format("HH:mm:ss")
+}
+
+export const getAllCollaborations = async (req, res) => {
+    try {
+        const collaborations = await CommunityCollaboration.find().sort({ createdAt: -1 })
+
+        return res.status(200).send({
+            success: true,
+            message: 'Actividades comunitarias obtenidas correctamente',
+            collaborations
+        })
+    } catch (error) {
+        console.error("Error al obtener actividades:", error)
+        return res.status(500).send({
+            success: false,
+            message: 'Error al obtener las actividades comunitarias'
+        })
+    }
 }

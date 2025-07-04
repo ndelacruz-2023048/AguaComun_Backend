@@ -5,7 +5,8 @@ import {getUsers,
         getUserCommunities, 
         getUserCampaignsWithContribution, 
         getUserReports, 
-        getUserCommunityCollaborations
+        getUserCommunityCollaborations,
+        getRecentUsers
     } from "./user.controller.js";
 
 const user = Router();
@@ -17,5 +18,6 @@ user.get("/communities/:userId", getUserCommunities);
 user.get("/campaigns-contributed/:userId", getUserCampaignsWithContribution);
 user.get("/reports/:userId", getUserReports);
 user.get("/collaborations/:userId",  getUserCommunityCollaborations);
+user.get('/recent', getRecentUsers)
 
 export default user;
