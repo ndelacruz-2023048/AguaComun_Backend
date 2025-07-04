@@ -3,8 +3,11 @@ import { getResumeData } from './resume.service.js';
 import { getIO } from '../Sockets/io.js';
 
 export const getResume = async (req, res) => {
+    const { id } = req.params 
     try {
-        const resumeData = await getResumeData();
+        console.log(`Fetching resume data for community ID: ${id}`);
+        
+        const resumeData = await getResumeData(id);
 
         const io = getIO();
         if (io) {

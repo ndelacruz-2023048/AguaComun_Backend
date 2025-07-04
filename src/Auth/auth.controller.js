@@ -80,7 +80,7 @@ export const register = async(req, res)=> {
         const data = req.body
         let user = new User(data)
         user.password = await encrypt(user.password)
-        await user.save()
+        
 
         const {department, municipality, zone} = data.address
         let community = await Community.findOne(
@@ -117,6 +117,13 @@ export const register = async(req, res)=> {
             }
         }
         await community.save()
+
+        if (!user.community || user.community.toString() !== community._id.toString()) {
+            user.community = community._id;
+            await user.save(); // 👈 Guardamos el cambio
+        }
+
+        await user.save()
 
         return res.status(200).send(
             {

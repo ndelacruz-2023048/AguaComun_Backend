@@ -3,6 +3,6 @@ import { getResume } from './resume.controller.js'
 
 const resume = Router()
 
-resume.get('/list', getResume)
+resume.get('/list/:id', getResume)
 
 export default resume

@@ -48,6 +48,7 @@ const userSchema = new Schema(
         community: {
             type: Schema.Types.ObjectId,
             ref: 'Community',
+            immutable: true,
         }
     },
     {
