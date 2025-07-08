@@ -33,7 +33,7 @@
         app.use(express.urlencoded({extended: false}))
         app.use(cors(
             {
-                origin: ['https://aguacomunfrontend-production.up.railway.app', 'http://localhost:5173'],
+                origin: ['https://aguacomunfrontend-production.up.railway.app', 'http://localhost:5175'],
                 credentials: true,
             }
         ))
