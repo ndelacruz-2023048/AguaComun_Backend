@@ -1,12 +1,33 @@
 import Campaign from './campaign.model.js';
 
+const fixToLocalMidnight = (dateString) => {
+  // dateString: "YYYY-MM-DD" o ISO completo
+    const parts = dateString.split("-");
+    if (parts.length === 3) {
+        const [year, month, day] = parts.map(Number);
+        return new Date(year, month - 1, day); // crea fecha a medianoche local
+    } else {
+        // fallback
+        const date = new Date(dateString);
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    }
+};
+
 export const createCampaign = async (req, res) => {
     try {
-        const campaign = new Campaign(req.body);
+        const campaign = new Campaign({
+        ...req.body,
+        startDate: fixToLocalMidnight(req.body.startDate),
+        endDate: fixToLocalMidnight(req.body.endDate),
+        });
+
+        console.log("Fecha startDate ajustada:", fixToLocalMidnight(req.body.startDate));
+        console.log("Fecha endDate ajustada:", fixToLocalMidnight(req.body.endDate));
+
         await campaign.save();
         res.status(201).json(campaign);
     } catch (e) {
-        console.error('Error al crear la campaña', e);
+        console.error("Error al crear la campaña", e);
         res.status(400).json({ message: e.message });
     }
 };
@@ -34,9 +55,19 @@ export const getCampaignById = async (req, res) => {
 export const updateCampaign = async (req, res) => {
     try {
         const { id } = req.params;
-        const update = await Campaign.findByIdAndUpdate(id, req.body, { new: true });
-        if (!update) return res.status(404).json({ message: 'Campaña no encontrada' });
-        res.json(update);
+        const update = { ...req.body };
+
+        if (update.startDate) {
+        update.startDate = fixToLocalMidnight(update.startDate);
+        }
+        if (update.endDate) {
+        update.endDate = fixToLocalMidnight(update.endDate);
+        }
+
+        const updated = await Campaign.findByIdAndUpdate(id, update, { new: true });
+        if (!updated) return res.status(404).json({ message: "Campaña no encontrada" });
+
+        res.json(updated);
     } catch (e) {
         res.status(400).json({ message: e.message });
     }
